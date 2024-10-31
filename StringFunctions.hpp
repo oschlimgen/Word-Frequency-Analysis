@@ -1,5 +1,4 @@
-#ifndef STRING_FUNCTIONS_HPP
-#define STRING_FUNCTIONS_HPP
+#pragma once
 
 
 #include <string>
@@ -125,5 +124,3 @@ namespace StringFunctions {
     return result;
   }
 }
-
-#endif // STRING_FUNCTIONS_HPP

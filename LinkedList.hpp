@@ -1,10 +1,8 @@
+#pragma once
+
 #include <cstddef>
 #include <iterator>
 #include <exception>
-
-
-#ifndef LINKED_LIST_HPP
-#define LINKED_LIST_HPP
 
 
 template<typename T> class list {
@@ -14,7 +12,7 @@ private:
 
   node* first;
   node* last;
-  std::size_t length;
+  size_t length;
 
   void _clear() {
     node* p = first;
@@ -29,29 +27,29 @@ private:
     length = 0;
   }
 
-  static node* _incrementBy(node* start, const std::size_t& elements) {
-    for(std::size_t i = 0; i < elements; ++i) {
+  static node* _incrementBy(node* start, const size_t elements) {
+    for(size_t i = 0; i < elements; ++i) {
       start = start->next;
     }
     return start;
   }
-  static const node* _incrementBy(const node* start, const std::size_t& elements) {
-    for(std::size_t i = 0; i < elements; ++i) {
+  static const node* _incrementBy(const node* start, const size_t elements) {
+    for(size_t i = 0; i < elements; ++i) {
       start = start->next;
     }
     return start;
   }
 
-  node* _findNode(const std::size_t& index) {
+  node* _findNode(const size_t index) {
     node* p = first;
-    for(std::size_t i = 0; i < index; ++i) {
+    for(size_t i = 0; i < index; ++i) {
       p = p->next;
     }
     return p;
   }
-  const node* _findNode(const std::size_t& index) const {
+  const node* _findNode(const size_t index) const {
     const node* p = first;
-    for(std::size_t i = 0; i < index; ++i) {
+    for(size_t i = 0; i < index; ++i) {
       p = p->next;
     }
     return p;
@@ -64,13 +62,13 @@ private:
     return _findNode(length - 1);
   }
 
-  void _resize(const std::size_t& size, const T* const value) {
+  void _resize(const size_t size, const T* const value) {
     if(length > size) {
       if(size <= 0) {
         _clear();
       } else {
         node* p = first;
-        for(std::size_t i = 0; i < size - 1; ++i) {
+        for(size_t i = 0; i < size - 1; ++i) {
           p = p->next;
         }
         last = p;
@@ -78,7 +76,7 @@ private:
         node* nextp;
         nextp = p->next;
         p->next = nullptr;
-        for(std::size_t i = size; i < length; ++i) {
+        for(size_t i = size; i < length; ++i) {
           p = nextp;
           nextp = p->next;
           delete p;
@@ -90,12 +88,12 @@ private:
       node* p = last;
 
       if(value == nullptr) {
-        for(std::size_t i = length - 1; i < size - 1; ++i) {
+        for(size_t i = length - 1; i < size - 1; ++i) {
           p->next = new node;
           p = p->next;
         }
       } else {
-        for(std::size_t i = length - 1; i < size - 1; ++i) {
+        for(size_t i = length - 1; i < size - 1; ++i) {
           p->next = new node(new T(*value));
           p = p->next;
         }
@@ -118,7 +116,7 @@ private:
     }
   }
 
-  void _insert(const std::size_t& index, T* const value) {
+  void _insert(const size_t index, T* const value) {
     if(index == length) {
       _add(value);
     } else if(index == 0) {
@@ -255,18 +253,18 @@ public:
   iterator end() { return nullptr; }
   const_iterator end() const { return nullptr; }
 
-  std::size_t size() const { return length; }
+  size_t size() const { return length; }
 
-  T& operator[](const std::size_t& index) { return *_findNode(index)->value; }
-  const T& operator[](const std::size_t& index) const { return *_findNode(index)->value; }
+  T& operator[](const size_t index) { return *_findNode(index)->value; }
+  const T& operator[](const size_t index) const { return *_findNode(index)->value; }
 
-  T& at(const std::size_t& index) {
+  T& at(const size_t index) {
     if(index < 0 || index >= length) {
       throw OutOfRange(length, index);
     }
     return operator[](index);
   }
-  const T& at(const std::size_t& index) const {
+  const T& at(const size_t index) const {
     if(index < 0 || index >= length) {
       throw OutOfRange(length, index);
     }
@@ -278,14 +276,14 @@ public:
 
   void clear() { _clear(); }
 
-  void resize(const std::size_t& size) { _resize(size, nullptr); }
-  void resize(const std::size_t& size, const T& value) { _resize(size, &value); }
+  void resize(const size_t size) { _resize(size, nullptr); }
+  void resize(const size_t size, const T& value) { _resize(size, &value); }
 
   void add(const T& value) {
     _add(new T(value));
   }
 
-  void insert(const std::size_t& index, const T& value) {
+  void insert(const size_t index, const T& value) {
     if(index < 0 || index > length) {
       throw OutOfRange(length, index);
     }
@@ -294,7 +292,7 @@ public:
 
   void pop() { _pop(); }
 
-  void remove(const std::size_t& index) {
+  void remove(const size_t index) {
     if(index < 0 || index >= length) {
       throw OutOfRange(length, index);
     }
@@ -433,7 +431,7 @@ public:
   bool operator>(const iterator& other) const { return ptr > other.ptr; }
 
   iterator operator+(int other) const { return _incrementBy(ptr, other); }
-  iterator operator+(const std::size_t& other) const { return _incrementBy(ptr, other); }
+  iterator operator+(const size_t other) const { return _incrementBy(ptr, other); }
 
   operator bool() const { return ptr != nullptr; }
   bool isnull() const { return ptr == nullptr; }
@@ -483,7 +481,7 @@ public:
   bool operator>(const const_iterator& other) const { return ptr > other.ptr; }
 
   const_iterator operator+(int other) const { return _incrementBy(ptr, other); }
-  const_iterator operator+(const std::size_t& other) const { return _incrementBy(ptr, other); }
+  const_iterator operator+(const size_t other) const { return _incrementBy(ptr, other); }
 
   operator bool() const { return ptr != nullptr; }
   bool isnull() const { return ptr == nullptr; }
@@ -507,7 +505,7 @@ class list<T>::OutOfRange : public std::exception
 
 public:
   OutOfRange() : msg("Linked List index out of range.") {}
-  OutOfRange(std::size_t containerSize, std::size_t requestedSize) : msg("Linked List index out of range.") {
+  OutOfRange(size_t containerSize, size_t requestedSize) : msg("Linked List index out of range.") {
     msg += " Container size: " + std::to_string(containerSize);
     msg += "; requested index: " + std::to_string(requestedSize);
   }
@@ -602,5 +600,3 @@ public:
   }
 };
 
-
-#endif /* LINKED_LIST_HPP */
